@@ -53,7 +53,9 @@ services:
       - taiga
 
   taiga-back:
-    image: taigaio/taiga-back:latest
+    build:
+      context: ./taiga-back
+      dockerfile: docker/Dockerfile
     environment: *default-back-environment
     volumes: *default-back-volumes
     networks:
@@ -67,7 +69,9 @@ services:
         condition: service_started
 
   taiga-async:
-    image: taigaio/taiga-back:latest
+    build:
+      context: ./taiga-back
+      dockerfile: docker/Dockerfile
     entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
     environment: *default-back-environment
     volumes: *default-back-volumes
@@ -95,7 +99,9 @@ services:
       - taiga
 
   taiga-front:
-    image: taigaio/taiga-front:latest
+    build:
+      context: ./taiga-front
+      dockerfile: docker/Dockerfile
     environment:
       TAIGA_URL: "${TAIGA_SCHEME}://${TAIGA_DOMAIN}"
       TAIGA_WEBSOCKETS_URL: "${WEBSOCKETS_SCHEME}://${TAIGA_DOMAIN}"
