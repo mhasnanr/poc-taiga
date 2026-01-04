@@ -109,11 +109,16 @@ services:
       # ...your customizations go here
     networks:
       - taiga
-    # volumes:
-    #   - ./conf.json:/usr/share/nginx/html/conf.json
+    volumes:
+      - ./taiga-front/dist:/usr/share/nginx/html:ro
+      - ./taiga-front/docker/conf.json.template:/usr/share/nginx/html/conf.json.template:ro
+      # Optional: mount source locales (changes will take effect after rebuilding `dist`)
+      - ./taiga-front/app/locales:/usr/share/nginx/html/app/locales:ro
 
   taiga-events:
-    image: taigaio/taiga-events:latest
+    build:
+      context: ./taiga-events
+      dockerfile: docker/Dockerfile
     environment:
       RABBITMQ_USER: "${RABBITMQ_USER}"
       RABBITMQ_PASS: "${RABBITMQ_PASS}"
@@ -138,7 +143,9 @@ services:
       - taiga
 
   taiga-protected:
-    image: taigaio/taiga-protected:latest
+    build:
+      context: ./taiga-protected
+      dockerfile: docker/Dockerfile
     environment:
       MAX_AGE: "${ATTACHMENTS_MAX_AGE}"
       SECRET_KEY: "${SECRET_KEY}"
