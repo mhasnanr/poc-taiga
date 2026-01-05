@@ -109,11 +109,8 @@ services:
       # ...your customizations go here
     networks:
       - taiga
-    volumes:
-      - ./taiga-front/dist:/usr/share/nginx/html:ro
-      - ./taiga-front/docker/conf.json.template:/usr/share/nginx/html/conf.json.template:ro
-      # Optional: mount source locales (changes will take effect after rebuilding `dist`)
-      - ./taiga-front/app/locales:/usr/share/nginx/html/app/locales:ro
+    # volumes:
+    #   - ./conf.json:/usr/share/nginx/html/conf.json
 
   taiga-events:
     build:
